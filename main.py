@@ -10,10 +10,11 @@ from pydantic import BaseModel, HttpUrl
 from fastapi.middleware.cors import CORSMiddleware
 
 import config
-from bilibili_spider import bv_probe
+from bilibili_spider import bv_probe, extract_bv_number
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 
 
 app.add_middleware(
@@ -78,10 +79,14 @@ class ConversationRequest(BaseModel):
 @app.put("/conversation")
 async def update_conversation(request: ConversationRequest = Body(...)):
     url = request.url
+    bv_number = extract_bv_number(url)
+    probe_in_db = await app.db.find_one({"bv_number": bv_number})
+    if probe_in_db:
+        probe_in_db["id"] = str(probe_in_db.pop("_id"))
+        return probe_in_db
 
     probe = await bv_probe(url)
-    # new_record: pymongo.results.InsertOneResult = await app.db.insert_one(probe)
-    # return str(new_record.inserted_id)
-    # with open("video_info_example.json", "w") as f:
-    #     json.dump(probe, f, ensure_ascii=False, indent=4)
+    await app.db.insert_one(probe)
+
+    probe["id"] = str(probe.pop("_id"))
     return probe
