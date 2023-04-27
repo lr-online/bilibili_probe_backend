@@ -1,10 +1,6 @@
-import json
-
-import pymongo.results
-from loguru import logger
 from fastapi import FastAPI, Query, Body
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import FileResponse
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, HttpUrl
 from fastapi.middleware.cors import CORSMiddleware

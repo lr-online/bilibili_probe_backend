@@ -1,5 +1,7 @@
 import base64
 import re
+from typing import List
+
 import aiohttp
 import asyncio
 import json
@@ -15,7 +17,8 @@ from snapshot_selenium import snapshot as driver
 
 
 def extract_bv_number(url: str):
-    pattern = r"\/(BV\w+)\/"
+    # https://www.bilibili.com/video/BV1Qz411q7tg/?spm_id_from=333.337.search-card.all.click
+    pattern = r"\/(BV\w+)[\/?]"
     match = re.search(pattern, url)
     if match:
         return match.group(1)
@@ -68,7 +71,7 @@ def parse_bilibili_danmaku(danmaku):
 
 
 def generate_wordcloud_image(
-    text_list,
+    text_list: List[str],
     title="Bilibili弹幕词云图",
 ):
     # 获取所有弹幕的文本内容并统计出现次数
