@@ -68,11 +68,12 @@ def parse_bilibili_danmaku(danmaku):
 
 
 def generate_wordcloud_image(
-        text_list, title="Bilibili弹幕词云图",
+    text_list,
+    title="Bilibili弹幕词云图",
 ):
     # 获取所有弹幕的文本内容并统计出现次数
     stopwords = set()
-    with open('stopwords.txt', 'r', encoding='utf-8') as f:
+    with open("stopwords.txt", "r", encoding="utf-8") as f:
         for line in f:
             stopwords.add(line.strip())
 
@@ -104,12 +105,12 @@ def generate_wordcloud_image(
 
 
 async def download_bilibili_comments(bv_number):
-    url = f'https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&oid={bv_number}&sort=0'
+    url = f"https://api.bilibili.com/x/v2/reply?jsonp=jsonp&pn=1&type=1&oid={bv_number}&sort=0"
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             response_text = await resp.text()
             response_dict = json.loads(response_text)
-            comments = response_dict['data']['replies']
+            comments = response_dict["data"]["replies"]
             return comments
 
 
@@ -136,7 +137,7 @@ async def bv_probe(video_url: str):
         title=video_info["title"] + "——弹幕词云",
     )
     comments_wordcloud = generate_wordcloud_image(
-        (comment['content']['message'] for comment in comments),
+        (comment["content"]["message"] for comment in comments),
         title=video_info["title"] + "——评论词云",
     )
     return {

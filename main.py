@@ -57,8 +57,11 @@ async def shutdown():
 async def root():
     return FileResponse("static/index.html")
 
+
 @app.get("/conversations")
-async def get_conversation_list(page: int = Query(1, ge=1), size: int = Query(10, ge=1)):
+async def get_conversation_list(
+    page: int = Query(1, ge=1), size: int = Query(10, ge=1)
+):
     skip = (page - 1) * size
     cursor = app.db.find().skip(skip).limit(size)
     results = []
