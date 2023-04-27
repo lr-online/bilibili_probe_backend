@@ -1,0 +1,12 @@
+aiohttp
+Beautifulsoup4
+jieba
+pyecharts
+lxml
+loguru
+snapshot_selenium
+
+pydantic
+fastapi
+uvicorn
+motor

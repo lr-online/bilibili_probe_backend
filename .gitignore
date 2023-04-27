@@ -1,0 +1,16 @@
+# Python related files
+*.pyc
+__pycache__/
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+MANIFEST
+pip-wheel-metadata/
+.idea/
+env/
+venv/
+.venv/
+
+wordcloud_cache/*.png
